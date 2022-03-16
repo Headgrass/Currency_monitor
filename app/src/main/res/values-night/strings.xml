@@ -1,9 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Currency_monitor</string>
     <string name="currency_actually_today">Актуальные курсы валют на сегодня:</string>
-    <string name="item_value">26.4864</string>
-    <string name="item_name">Польский злотый</string>
-    <string name="item_nominal">1</string>
     <string name="currency_pb_loading">Загружаю данные</string>
     <string name="title_currency_now">Курсы валют</string>
     <string name="title_calculator">Калькулятор</string>
