@@ -6,13 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import ru.headgrass.currency_monitor.R
 import ru.headgrass.currency_monitor.model.Currency
 import ru.headgrass.currency_monitor.viewmodel.AppState
 import ru.headgrass.currency_monitor.viewmodel.CurrencyViewModel
 import ru.headgrass.currency_monitor.databinding.CurrencyFragmentBinding
+import ru.headgrass.currency_monitor.model.MyAdapter
 
 class CurrencyFragment : Fragment() {
+
+
 
     companion object {
         fun newInstance() = CurrencyFragment()
@@ -20,8 +26,15 @@ class CurrencyFragment : Fragment() {
 
     private var _binding: CurrencyFragmentBinding? = null
     private val binding get() = _binding!!
+    private val adapter = MyAdapter()
 
     private lateinit var viewModel: CurrencyViewModel
+
+    private lateinit var newRecyclerView: RecyclerView
+    private lateinit var newArrayList: ArrayList<Currency>
+    lateinit var nominal : Array<String>
+    lateinit var name : Array<String>
+    lateinit var value : Array<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,25 +46,45 @@ class CurrencyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.currencyRecyclerView.adapter = adapter
+
+        adapter.listener = MyAdapter.OnItemClick {
+
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.main_container, CalcFragment())
+                .commit()
+        }
+
+        binding.currencyRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+
         viewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
-        viewModel.getData().observe(viewLifecycleOwner, { state ->
+        //Подписались на изменения LiveData
+        viewModel.getData().observe(viewLifecycleOwner) { state ->
             render(state)
-        })
-        viewModel.getCurrency()
+        }
+        //Запросили новые данные
+        viewModel.getCurrencyFromLocalStorage()
     }
 
     private fun render(state: AppState) {
 
         when (state) {
             is AppState.Success -> {
+                val currency: List<Currency> = state.currency as List<Currency>
+                adapter.setCurrency(currency)
+
                 binding.loadingContainer.visibility = View.GONE
-                val currency = state.currency as Currency
+
             }
             is AppState.Error -> {
                 binding.loadingContainer.visibility = View.VISIBLE
-                Snackbar.make(binding.root, state.error.message.toString(), Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(binding.root,
+                    state.error.message.toString(),
+                    Snackbar.LENGTH_INDEFINITE)
                     .setAction("Попробовать снова") {
-                        viewModel.getCurrency()
+                        viewModel.getCurrencyFromLocalStorage()
                     }.show()
             }
             is AppState.Loading -> {

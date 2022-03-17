@@ -13,9 +13,14 @@ class CurrencyViewModel : ViewModel() {
 
     fun getData(): LiveData<AppState> = liveDataToObserve
 
-    fun getCurrency() {
+    fun getCurrencyFromLocalStorage(){
+
         liveDataToObserve.value = AppState.Loading
 
-
+        Thread {
+            Thread.sleep(1000)
+            val currency = repo.getCurrencyFromLocalStorage()
+            liveDataToObserve.postValue(AppState.Success(currency))
+        }.start()
     }
 }

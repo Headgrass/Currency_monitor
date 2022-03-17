@@ -4,5 +4,5 @@ interface Repository {
 
     fun getCurrencyFromServer(): Currency
 
-    fun getCurrencyFromLocalStorage(): Currency
+    fun getCurrencyFromLocalStorage(): List<Currency>
 }

@@ -5,4 +5,8 @@
     <string name="title_currency_now">Курсы валют</string>
     <string name="title_calculator">Калькулятор</string>
     <string name="title_name_app">Приложение курса валют</string>
+    <string name="calc_title">Калькулятор</string>
+    <string name="calc_hint_currency_name">Канадский доллар</string>
+    <string name="calc_hint_rub">100</string>
+    <string name="calc_title_button">Считать</string>
 </resources>

@@ -5,7 +5,7 @@ class RepositoryImpl : Repository {
         return Currency()
     }
 
-    override fun getCurrencyFromLocalStorage(): Currency {
-        return Currency()
+    override fun getCurrencyFromLocalStorage(): List<Currency> {
+        return getCurrencyNow()
     }
 }
