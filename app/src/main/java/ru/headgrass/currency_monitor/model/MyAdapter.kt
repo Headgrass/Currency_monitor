@@ -41,11 +41,13 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         val nominal: TextView = itemView.findViewById(R.id.item_currency_nominal)
         val name: TextView = itemView.findViewById(R.id.item_currency_name)
         val value: TextView = itemView.findViewById(R.id.item_currency_value)
 
         fun bind(currency: Currency) {
+
             itemView.setOnClickListener {
                 listener?.OnClick(currency)
             }
